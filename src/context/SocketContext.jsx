@@ -13,6 +13,9 @@ export const SocketProvider = ({ children }) => {
   const socket = useRef();
   const { userInfo } = useAppStore();
   const addMessage = useAppStore((state) => state.addMessage);
+  const addContactsInDMContacts = useAppStore(
+    (state) => state.addContactsInDMContacts
+  );
   useEffect(() => {
     if (userInfo) {
       socket.current = io(HOST, {

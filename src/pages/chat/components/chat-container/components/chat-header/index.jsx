@@ -19,7 +19,7 @@ const ChatHeader = () => {
               <Avatar className="h-12 w-12  rounded-full overflow-hidden">
                 {selectedChatData.image ? (
                   <AvatarImage
-                    src={`${HOST}/${selectedChatData.image}`}
+                    src={selectedChatData.image}
                     alt="profile"
                     className="object-cover w-full h-full bg-black"
                   />
@@ -42,9 +42,7 @@ const ChatHeader = () => {
             )}
           </div>
           <div>
-          {
-            selectedChatType==="channel" && selectedChatData.name
-          }
+            {selectedChatType === "channel" && selectedChatData.name}
             {selectedChatType === "contact" && selectedChatData.firstName
               ? `${selectedChatData.firstName} ${selectedChatData.lastName}`
               : selectedChatData.email}
