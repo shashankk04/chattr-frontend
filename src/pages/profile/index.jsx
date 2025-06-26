@@ -34,9 +34,10 @@ const Profile = () => {
       setLastName(userInfo.lastName);
       setSelectedColor(userInfo.color);
     }
-    if(userInfo.image){
-      setImage(`${HOST}/${userInfo.image}`);
+    if (userInfo.image) {
+      setImage(userInfo.image); // ✅ Use full Cloudinary URL as-is
     }
+    
   },[userInfo]);
 
   const validateProfile = ()=>{
@@ -51,27 +52,40 @@ const Profile = () => {
     return true;
   }
   const saveChanges = async () => {
-    if(validateProfile()){
-      try{
-        const response = await apiClient.post(UPDATE_PROFILE_ROUTE,{firstName,lastName,color:selectedColor},{withCredentials:true});
-        if(response.status===200 && response.data){
-          setUserInfo({...response.data});
+    if (validateProfile()) {
+      try {
+        const response = await apiClient.post(
+          UPDATE_PROFILE_ROUTE,
+          {
+            firstName,
+            lastName,
+            color: selectedColor,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+
+        if (response.status === 200 && response.data) {
+          setUserInfo({ ...response.data }); // ✅ Let this handle userInfo update
           toast.success("Profile updated successfully.");
           navigate("/chat");
         }
-      }
-      catch(err){
+      } catch (err) {
         console.log(err);
       }
-    };
-    setUserInfo({
-      ...userInfo,
-      firstName,
-      lastName,
-      color: colors[selectedColor],
-    });
-    navigate("/chat");
+    }
+
+    // ❌ This part is redundant and possibly broken — remove it:
+    // setUserInfo({
+    //   ...userInfo,
+    //   firstName,
+    //   lastName,
+    //   color: colors[selectedColor],
+    // });
+    // navigate("/chat");
   };
+  
   const handleNavigate = ()=>{
     if(userInfo.profileSetup){
       navigate("/chat");
